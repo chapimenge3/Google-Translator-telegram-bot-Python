@@ -161,6 +161,7 @@ def translater(update,context):
 
 	if the last 3 condition is false it sends error message to input the user again
 	'''
+	
 	global text
 	text = update.message.text
 	dest = text.split()[-1]
@@ -226,7 +227,10 @@ def main():
         },
 
         fallbacks=[CommandHandler('cancel', cancel)] ,)
+	
+	
 	''' registering the hander to dispatcher'''
+	
 	echo_handler = MessageHandler(Filters.text, echo)
 	dispatcher.add_handler(echo_handler)
 	dispatcher.add_error_handler(error)
@@ -236,6 +240,6 @@ def main():
 	''' to stop the code runnig in the cmd by control+c'''
 	updater.idle()
 
-
+'''driver'''
 if __name__ == '__main__':
 	main()
