@@ -1,0 +1,2 @@
+python-telegram-bot==12.2.0
+googletrans==2.4.0
