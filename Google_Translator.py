@@ -10,7 +10,7 @@ logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s
                      level=logging.INFO
                     )
 logger = logging.getLogger(__name__)
-
+python token="917948076:AAEvyOZEujweaaBPF_VdUpAjJZa24DGE3uo"
 translator = Translator()
 token = '917948076:AAEvyOZEujweaaBPF_VdUpAjJZa24DGE3uo'
 bot = Bot(token)
