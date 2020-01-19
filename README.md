@@ -14,7 +14,7 @@
   - First make sure you have python , pip by opening command line (winkey+r and tpye 'cmd' and enter )
   - Enter python or pip __if you see__
       __python' is not recognized as an internal or external command.
-      operable program or batch file.__ then install it 
+      operable program or batch file.__ then install it from [python.org](https://www.python.org/downloads/)
 # Installing requirement 
   ```
   pip install python-telegram-bot==12.2.0
