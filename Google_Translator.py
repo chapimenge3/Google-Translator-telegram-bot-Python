@@ -135,44 +135,43 @@ LANGUAGES = {
 
 LANGCODES = dict(map(reversed, LANGUAGES.items()))
 def start(update,context):
-	''' opening conversation
-	when you send /start to the bot
-	you can change every string to your customized names or description 
-	'''
+    ''' opening conversation
+    when you send /start to the bot
+    you can change every string to your customized names or description 
+    '''
 
-	logger.info("Mr of %s: start conversations", update.message.from_user.first_name)
-	context.bot.send_message(chat_id=update.message.chat_id, 
-		text="Wellcome to Google Translation bot. Mr/Mrs "+ update.message.from_user.first_name+ " Chapi's Always Favorite and Bestie")
-	update.message.reply_text(form,parse_mode=telegram.ParseMode.HTML)
+    logger.info("Mr of %s: start conversations", update.message.from_user.first_name)
+    context.bot.send_message(chat_id=update.message.chat_id, 
+        text="Wellcome to Google Translation bot. Mr/Mrs "+ update.message.from_user.first_name+ " Chapi's Always Favorite and Bestie")
+    update.message.reply_text(form,parse_mode=telegram.ParseMode.HTML)
 
-	return IN  # return to state IN and wherever you enter or send it first find in IN
+    return IN  # return to state IN and wherever you enter or send it first find in IN
 def translater(update,context):
-	''' Translator Function
-	it takes string and split it 
-	then check 
-			1.the word 'to' in the text 
-			2.the length of the splited text must greater than 2 means it must have at least one additional word other than 'to' and des.. language
-			3.check the language the user entered is found on the language dictionary  
-	it then take the last word as a destination language if it is valid 
-	then delete it the last first means the destination language and last second means 'to'
-	get the code for the destination language from getdest function
-	the join the text by space to have the original text format and send to to the translator function
-	finally print the text and pronunciation of the word 
-
-	if the last 3 condition is false it sends error message to input the user again
-	'''
-	
-	global text
-	text = update.message.text
-	dest = text.split()[-1]
-	if 'to' in text and len(text.split()) > 2 and languagecheck (dest):
-		text = text.split()
-		dest = text[-1]
-		dest = getdest(dest)
-		del text[-2],text[-1]
-		text = ' '.join(text)
-		text = trans(text,dest)
-		context.bot.send_message(chat_id=update.message.chat_id , text="""
+    ''' Translator Function
+    it takes string and split it 
+    then check 
+            1.the word 'to' in the text 
+            2.the length of the splited text must greater than 2 means it must have at least one additional word other than 'to' and des.. language
+            3.check the language the user entered is found on the language dictionary  
+    it then take the last word as a destination language if it is valid 
+    then delete it the last first means the destination language and last second means 'to'
+    get the code for the destination language from getdest function
+    the join the text by space to have the original text format and send to to the translator function
+    finally print the text and pronunciation of the word 
+    if the last 3 condition is false it sends error message to input the user again
+    '''
+    
+    global text
+    text = update.message.text
+    dest = text.split()[-1]
+    if 'to' in text and len(text.split()) > 2 and languagecheck (dest):
+        text = text.split()
+        dest = text[-1]
+        dest = getdest(dest)
+        del text[-2],text[-1]
+        text = ' '.join(text)
+        text = trans(text,dest)
+        context.bot.send_message(chat_id=update.message.chat_id , text="""
 Translation is 
 _________________
 <strong>{}</strong>
@@ -180,45 +179,43 @@ _________________
 pronunciation is 
 _________________
 <strong>{}</strong>
-
-
 """.format(text.text,text.pronunciation ),parse_mode=telegram.ParseMode.HTML )
-		update.message.reply_text(form,parse_mode=telegram.ParseMode.HTML)
-	else:
-		update.message.reply_text('Please Enter in The correct format your input is invalid ')
-		update.message.reply_text(form,parse_mode=telegram.ParseMode.HTML)
-		# print(text.text)
-	return IN
+        update.message.reply_text(form,parse_mode=telegram.ParseMode.HTML)
+    else:
+        update.message.reply_text('Please Enter in The correct format your input is invalid ')
+        update.message.reply_text(form,parse_mode=telegram.ParseMode.HTML)
+        # print(text.text)
+    return IN
 def trans(text,dest='en'):
-	''' Translator Function 
-	it Translate the text to the destionation language'''
-	return  translator.translate(text,dest=dest)
+    ''' Translator Function 
+    it Translate the text to the destionation language'''
+    return  translator.translate(text,dest=dest)
 def cancel(update, context):
-	''' to cancel the conversation'''
-	update.message.reply_text('Thank you! I hope we can talk again some day.\n')
-	return ConversationHandler.END
+    ''' to cancel the conversation'''
+    update.message.reply_text('Thank you! I hope we can talk again some day.\n')
+    return ConversationHandler.END
 def echo(update, context):
-	''' echo if any one cancel the conversation and send text to be translated'''
+    ''' echo if any one cancel the conversation and send text to be translated'''
     context.bot.send_message(chat_id=update.effective_chat.id, text="Please send /start to start conversation")
 def error(update, context):
     """Log Errors caused by Updates."""
     logger.warning('Update "%s" caused error "%s"', update, context.error)
 def languagecheck(text):
-	if text.lower() in LANGCODES:
-		return True
-	else:
-		return False
+    if text.lower() in LANGCODES:
+        return True
+    else:
+        return False
 def getdest(dest="english"):
     try:
         return LANGCODES[dest.lower()]
     except:
         return False
 def main():
-	''' updater startup'''
-	updater = Updater(token=token,use_context=True)
-	dispatcher = updater.dispatcher
-	'''conversation  handeled by this''' 
-	conv_handler = ConversationHandler (
+    ''' updater startup'''
+    updater = Updater(token=token,use_context=True)
+    dispatcher = updater.dispatcher
+    '''conversation  handeled by this''' 
+    conv_handler = ConversationHandler (
         entry_points=[CommandHandler('start', start)],
 
         states={
@@ -227,19 +224,19 @@ def main():
         },
 
         fallbacks=[CommandHandler('cancel', cancel)] ,)
-	
-	
-	''' registering the hander to dispatcher'''
-	
-	echo_handler = MessageHandler(Filters.text, echo)
-	dispatcher.add_handler(echo_handler)
-	dispatcher.add_error_handler(error)
-	dispatcher.add_handler(conv_handler)
-	''' start fetching dat from the telegram'''
-	updater.start_polling()
-	''' to stop the code runnig in the cmd by control+c'''
-	updater.idle()
+    
+    
+    ''' registering the hander to dispatcher'''
+    
+    echo_handler = MessageHandler(Filters.text, echo)
+    dispatcher.add_handler(echo_handler)
+    dispatcher.add_error_handler(error)
+    dispatcher.add_handler(conv_handler)
+    ''' start fetching dat from the telegram'''
+    updater.start_polling()
+    ''' to stop the code runnig in the cmd by control+c'''
+    updater.idle()
 
 '''driver'''
 if __name__ == '__main__':
-	main()
+    main()
