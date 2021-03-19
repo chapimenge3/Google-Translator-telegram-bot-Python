@@ -11,7 +11,7 @@
     -take the token and paste it in python file by the name `python token="your token"`
     -run the python file on command line or wherever
 # Instruction
-  - First make sure you have python , pip by opening command line (winkey+r and tpye 'cmd' and enter )
+  - First make sure you have python , pip by opening command line
   - Enter python or pip __if you see__
       __python' is not recognized as an internal or external command.
       operable program or batch file.__
