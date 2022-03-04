@@ -6,7 +6,7 @@
     - **python-telegram-bot = 12.2.0**
   - get token by  
     - open your telegram 
-    - search for t.me/botfater
+    - search for @botfather or https://t.me/botfather
     - create new bot
     - take the token and paste it in python file by the name `python token="your token"`
     - run the python file on command line or wherever
